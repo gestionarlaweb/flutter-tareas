@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tareas/pages/add_task_screen.dart';
 import 'package:tareas/widgets/tasks_list.dart';
+import 'package:tareas/models/task_data.dart';
+import 'package:provider/provider.dart';
 
-class TaskScreen extends StatelessWidget {
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,25 +12,17 @@ class TaskScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         child: Icon(Icons.add),
-        // onPressed: () {
-        //   showBottomSheet(
-        //       context: context,
-        //       // isScrollControlled: true, Si queremos que ocupe toda la pantalla
-        //       builder: (context) => AddTaskScreen());
-        // },
-        // Aquí envolvemos el AddTaskScreen() en un SingleChildScrollView para
-        // colocarlo encima del teclado
         onPressed: () {
-          showBottomSheet(
-            context: context,
-            builder: (context) => SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen(),
-              ),
-            ),
-          );
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: AddTaskScreen(),
+                    ),
+                  ));
         },
       ),
       body: Column(
@@ -53,7 +47,7 @@ class TaskScreen extends StatelessWidget {
                   height: 10.0,
                 ),
                 Text(
-                  'Notes...',
+                  'Tares...',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 50.0,
@@ -61,7 +55,7 @@ class TaskScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 tareas',
+                  '${Provider.of<TaskData>(context).taskCount} tareas',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -81,7 +75,7 @@ class TaskScreen extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
                   )),
-              child: TaskList(),
+              child: TasksList(),
             ),
           ),
         ],
